@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Links</title>
+</head>
+<body>
+    <h1>Update Links</h1>
+    {% for user_id in user_ids %}
+    <p><a href="{{ url_for('update_dashboard', user_id=user_id) }}">Update Dashboard for User {{ user_id }}</a></p>
+
+    {% endfor %}
+</body>
+</html>

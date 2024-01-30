@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Dashboard</title>
+</head>
+<body>
+    <h1>Update Dashboard</h1>
+    <form method="post" action="{{ url_for('update_dashboard', user_id=user.id) }}">
+        <!-- Remove the hidden input field for user_id -->
+        <label for="website_link_count">Website Link Count:</label>
+        <input type="text" name="website_link_count" value="{{ user.dashboard.website_link_count }}"><br>
+
+        <label for="dmca_takedowns_sent">DMCA Takedowns Sent:</label>
+        <input type="text" name="dmca_takedowns_sent" value="{{ user.dashboard.dmca_takedowns_sent }}"><br>
+
+        <label for="dmca_takedowns_successful">DMCA Takedowns Successful:</label>
+        <input type="text" name="dmca_takedowns_successful" value="{{ user.dashboard.dmca_takedowns_successful }}"><br>
+
+        <label for="money_saved">Money Saved:</label>
+        <input type="text" name="money_saved" value="{{ user.dashboard.money_saved }}"><br>
+
+        <input type="submit" value="Update Dashboard">
+    </form>
+</body>
+</html>

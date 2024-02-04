@@ -72,7 +72,6 @@ pytesseract==0.3.10
 python-dateutil==2.8.2
 pytweening==1.0.7
 pytz==2023.3.post1
-pywin32
 referencing==0.32.1
 requests==2.31.0
 rich==13.7.0

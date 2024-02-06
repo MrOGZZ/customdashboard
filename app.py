@@ -4,7 +4,6 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, cur
 from sqlalchemy.orm import relationship
 import os
 
-
 app = Flask(__name__)
 if __name__ == '__main__':
     app.run(debug=True, port=5001)  # Change the port number as needed
@@ -32,6 +31,12 @@ class User(db.Model, UserMixin):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+@app.before_request
+def require_login():
+    allowed_routes = ['login', 'register']  # Add other allowed routes
+    if request.endpoint not in allowed_routes and not current_user.is_authenticated:
+        return redirect(url_for('login'))
 
 @app.route('/user_ids')
 def user_ids():
@@ -90,9 +95,11 @@ def user_dashboard():
     dashboard = current_user.dashboard
     return render_template('user_dashboard.html', dashboard=dashboard)
 
-@app.route('/register', methods=['POST'])
-@login_required
-def register_user():
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('user_dashboard'))
+    
     if current_user.username == 'admin':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -103,12 +110,15 @@ def register_user():
         db.session.add_all([new_dashboard, new_user])
         db.session.commit()
 
-        return f"User {username} registered successfully!"
+        return redirect(url_for('login'))
 
-    return "Unauthorized access!"
+    return render_template('register.html')
 
-@app.route('/login', methods=['GET', 'POST', 'PUT'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('user_dashboard')) 
+    
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -117,11 +127,10 @@ def login():
 
         if user:
             login_user(user)
-            return "Login successful!"
-
-        return "Login failed!"
-
-    # If it's a GET request, render the login form
+            return redirect(url_for('user_dashboard'))
+        else:
+            flash('Invalid username or password', 'error')
+    
     return render_template('login.html')
 
 @app.route('/logout')

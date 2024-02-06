@@ -6,8 +6,8 @@ import os
 
 
 app = Flask(__name__)
-port = int(os.environ.get("PORT", 5500))
-app.run(host="0.0.0.0", port=port)
+if __name__ == '__main__':
+    app.run(debug=True, port=5001)  # Change the port number as needed
 
 app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a secure secret key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'  # SQLite database file

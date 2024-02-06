@@ -106,8 +106,6 @@ def register():
         db.session.add_all([new_dashboard, new_user])
         db.session.commit()
 
-        return redirect(url_for('login'))
-
     return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])

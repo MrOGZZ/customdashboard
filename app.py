@@ -21,7 +21,6 @@ class Dashboard(db.Model):
     money_saved = db.Column(db.Float, default=0.0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -97,10 +96,7 @@ def user_dashboard():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('user_dashboard'))
-    
-    if current_user.username == 'admin':
+    if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
 

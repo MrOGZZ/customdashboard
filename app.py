@@ -37,6 +37,13 @@ def require_login():
     if request.endpoint not in allowed_routes and not current_user.is_authenticated:
         return redirect(url_for('login'))
 
+@app.route('/')
+def home():
+    if current_user.is_authenticated:
+        return redirect(url_for('user_dashboard'))
+    else:
+        return redirect(url_for('login'))
+
 @app.route('/user_ids')
 def user_ids():
     users = User.query.all()
@@ -105,6 +112,8 @@ def register():
         new_user = User(username=username, password=password, dashboard=new_dashboard)
         db.session.add_all([new_dashboard, new_user])
         db.session.commit()
+
+        return redirect(url_for('login'))
 
     return render_template('register.html')
 

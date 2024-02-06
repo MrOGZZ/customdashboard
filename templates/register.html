@@ -5,17 +5,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register New User</title>
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <h1>Register New User</h1>
-    <form method="post" action="/register">
+    <form id="registerForm" method="post" action="/register">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required><br>
+        <span id="usernameError" class="error-message"></span><br>
 
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br>
+        <span id="passwordError" class="error-message"></span><br>
 
-        <button type="submit">Register</button>
+        <button type="submit" id="registerButton">Register</button>
     </form>
+
+    <script>
+        const registerForm = document.getElementById('registerForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const usernameError = document.getElementById('usernameError');
+        const passwordError = document.getElementById('passwordError');
+        const registerButton = document.getElementById('registerButton');
+
+        registerForm.addEventListener('submit', function(event) {
+            if (!validateUsername()) {
+                event.preventDefault();
+            }
+            if (!validatePassword()) {
+                event.preventDefault();
+            }
+        });
+
+        function validateUsername() {
+            const usernameValue = usernameInput.value.trim();
+            if (usernameValue === '') {
+                usernameError.textContent = 'Username is required.';
+                return false;
+            } else {
+                usernameError.textContent = '';
+                return true;
+            }
+        }
+
+        function validatePassword() {
+            const passwordValue = passwordInput.value.trim();
+            if (passwordValue === '') {
+                passwordError.textContent = 'Password is required.';
+                return false;
+            } else if (passwordValue.length < 6) {
+                passwordError.textContent = 'Password must be at least 6 characters long.';
+                return false;
+            } else {
+                passwordError.textContent = '';
+                return true;
+            }
+        }
+
+        usernameInput.addEventListener('input', validateUsername);
+        passwordInput.addEventListener('input', validatePassword);
+    </script>
 </body>
 </html>

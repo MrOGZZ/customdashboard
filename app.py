@@ -9,7 +9,7 @@ app = Flask(__name__)
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-    
+
 app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a secure secret key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'  # SQLite database file
 db = SQLAlchemy(app)
@@ -108,7 +108,7 @@ def register_user():
 
     return "Unauthorized access!"
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST', 'PUT'])
 def login():
     if request.method == 'POST':
         username = request.form.get('username')
